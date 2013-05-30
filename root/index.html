@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>HANA File Viewer Demo</title>
+
+    <!-- Load SAPUI5 (from a remote server), select gold reflection theme and commons+ux3 control libraries -->
+    <script id="sap-ui-bootstrap"
+        src="/sap/ui5/1/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_goldreflection"
+        data-sap-ui-libs="sap.ui.commons,sap.ui.ux3,sap.ui.table"></script>
+        
+        
+    <script>
+    jQuery.sap.registerModulePath('movie.demo', './');
+    // Create the ux3 Shell
+    // ...fill several properties and aggregations in JSON syntax; alternatively they could also be set one by one
+    var oShell = new sap.ui.ux3.Shell("myShell", {
+        appIcon:"http://www.sap.com/global/images/SAPLogo.gif", // put the SAP logo into the header
+        appTitle:"HANA Movie Database",                 // give a title
+        worksetItems:[                                          // add some items to the top navigation
+            new sap.ui.ux3.NavigationItem({key:"wi_trace",text:"Movie Database"})
+        ]        
+    });
+        
+    // Page content creation - for each workset the content is defined here
+    // For demo purposes there is just one button on each page
+    var mContent = {}; // a map to remember page content once it is created
+    function getContent(key) {
+        if (mContent[key]) return mContent[key]; // if content is already created, return it directly
+
+        if (key == "wi_trace") {
+            mContent[key] = sap.ui.view({ type: sap.ui.core.mvc.ViewType.JS, viewName: "movie.demo.Viewer"});
+        } 
+        return mContent[key];       
+    }
+    
+    // when the user selects a workset, put the respective content into the shell's main area
+    oShell.attachWorksetItemSelected(function(oEvent) {
+        var key = oEvent.getParameter("key");    
+        oShell.setContent(getContent(key));
+    });
+    
+    // set the initial content of the Shell - the Home Overview is selected initially
+    oShell.setContent(getContent("wi_trace"));
+
+    // place the Shell into the <div> element defined below
+    oShell.placeAt("shellArea");
+
+    </script>
+
+</head>
+<body class="sapUiBody">
+
+    <!-- This is where the Shell will live -->
+    <div id="shellArea"></div>
+
+</body>
+</html>
