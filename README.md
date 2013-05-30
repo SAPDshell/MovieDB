@@ -1,6 +1,6 @@
 
 
-HANA XS Engine Example Application
+HANA XSW Engine Example Application
 
 - uses SAP UI5 
 - contains HTML/JavaScript
